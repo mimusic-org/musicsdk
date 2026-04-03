@@ -12,10 +12,10 @@ import (
 	"strings"
 )
 
-// KwSearcher 酷我音乐搜索器
+// KwSearcher kw 平台搜索器
 type KwSearcher struct{}
 
-// NewKwSearcher 创建酷我搜索器
+// NewKwSearcher 创建 kw 平台搜索器
 func NewKwSearcher() *KwSearcher {
 	return &KwSearcher{}
 }
@@ -27,17 +27,17 @@ func (s *KwSearcher) ID() string {
 
 // Name 返回搜索器名称
 func (s *KwSearcher) Name() string {
-	return "酷我音乐"
+	return "kw"
 }
 
-// kwSearchResponse 酷我搜索 API 响应
+// kwSearchResponse kw 搜索 API 响应
 type kwSearchResponse struct {
 	Total   string         `json:"TOTAL"`
 	Show    string         `json:"SHOW"`
 	Abslist []kwSearchItem `json:"abslist"`
 }
 
-// kwSearchItem 酷我搜索结果项
+// kwSearchItem kw 搜索结果项
 type kwSearchItem struct {
 	SongName         string `json:"SONGNAME"`
 	Artist           string `json:"ARTIST"`
@@ -127,8 +127,8 @@ func (s *KwSearcher) Search(keyword string, page int, limit int) (*SearchResult,
 	}, nil
 }
 
-// fixJsonFormat 修复酷我返回的非标准 JSON 格式
-// 酷我有时返回单引号 JSON，需要转换为双引号
+// fixJsonFormat 修复 kw 返回的非标准 JSON 格式
+// kw 有时返回单引号 JSON，需要转换为双引号
 // Go regexp 不支持 lookbehind，改用逐字符状态机实现
 func (s *KwSearcher) fixJsonFormat(str string) string {
 	var buf strings.Builder
@@ -209,7 +209,7 @@ func (s *KwSearcher) filterData(item kwSearchItem) SearchItem {
 		Duration: duration,
 		Source:   "kw",
 		MusicID:  musicID,
-		Songmid:  musicID, // kw 的 songmid 即为 musicID（洛雪音乐源 musicUrl 需要此字段）
+		Songmid:  musicID, // kw 的 songmid 即为 musicID
 		Img:      img,
 		Types:    types,
 	}

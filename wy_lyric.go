@@ -11,10 +11,10 @@ import (
 	"strings"
 )
 
-// WyLyricFetcher 网易云音乐歌词获取器
+// WyLyricFetcher wy 平台歌词获取器
 type WyLyricFetcher struct{}
 
-// NewWyLyricFetcher 创建网易云音乐歌词获取器
+// NewWyLyricFetcher 创建 wy 平台歌词获取器
 func NewWyLyricFetcher() *WyLyricFetcher {
 	return &WyLyricFetcher{}
 }
@@ -398,12 +398,4 @@ func abs(x int) int {
 		return -x
 	}
 	return x
-}
-
-// max 返回最大值
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }

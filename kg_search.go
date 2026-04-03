@@ -10,10 +10,10 @@ import (
 	"strings"
 )
 
-// KgSearcher 酷狗音乐搜索器
+// KgSearcher kg 平台搜索器
 type KgSearcher struct{}
 
-// NewKgSearcher 创建酷狗搜索器
+// NewKgSearcher 创建 kg 平台搜索器
 func NewKgSearcher() *KgSearcher {
 	return &KgSearcher{}
 }
@@ -25,10 +25,10 @@ func (s *KgSearcher) ID() string {
 
 // Name 返回搜索器名称
 func (s *KgSearcher) Name() string {
-	return "酷狗音乐"
+	return "kg"
 }
 
-// kgSearchResponse 酷狗搜索 API 响应
+// kgSearchResponse kg 搜索 API 响应
 type kgSearchResponse struct {
 	ErrorCode int `json:"error_code"`
 	Data      struct {
@@ -37,7 +37,7 @@ type kgSearchResponse struct {
 	} `json:"data"`
 }
 
-// kgSearchItem 酷狗搜索结果项
+// kgSearchItem kg 搜索结果项
 type kgSearchItem struct {
 	SongName    string     `json:"SongName"`
 	Singers     []kgSinger `json:"Singers"`
@@ -60,7 +60,7 @@ type kgSearchItem struct {
 	Grp []kgSearchItem `json:"Grp"`
 }
 
-// kgSinger 酷狗歌手信息
+// kgSinger kg 歌手信息
 type kgSinger struct {
 	Name string `json:"name"`
 }

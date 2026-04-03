@@ -9,10 +9,10 @@ import (
 	"log/slog"
 )
 
-// TxLyricFetcher QQ音乐歌词获取器
+// TxLyricFetcher tx 平台歌词获取器
 type TxLyricFetcher struct{}
 
-// NewTxLyricFetcher 创建 QQ 音乐歌词获取器
+// NewTxLyricFetcher 创建 tx 平台歌词获取器
 func NewTxLyricFetcher() *TxLyricFetcher {
 	return &TxLyricFetcher{}
 }
@@ -22,7 +22,7 @@ func (f *TxLyricFetcher) ID() string {
 	return "tx"
 }
 
-// txLyricResponse QQ音乐歌词 API 响应
+// txLyricResponse tx 歌词 API 响应
 type txLyricResponse struct {
 	Code  int    `json:"code"`
 	Lyric string `json:"lyric"` // base64 编码的歌词

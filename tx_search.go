@@ -14,10 +14,10 @@ const (
 	txSourceID = "tx"
 )
 
-// TxSearcher QQ音乐搜索器
+// TxSearcher tx 平台搜索器
 type TxSearcher struct{}
 
-// NewTxSearcher 创建 QQ 音乐搜索器
+// NewTxSearcher 创建 tx 平台搜索器
 func NewTxSearcher() *TxSearcher {
 	return &TxSearcher{}
 }
@@ -29,7 +29,7 @@ func (s *TxSearcher) ID() string {
 
 // Name 返回平台名称
 func (s *TxSearcher) Name() string {
-	return "QQ音乐"
+	return "tx"
 }
 
 // txSearchRequest 搜索请求结构

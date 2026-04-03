@@ -20,10 +20,10 @@ const (
 	eapiKey    = "e82ckenh8dichen8"
 )
 
-// WySearcher 网易云音乐搜索器
+// WySearcher wy 平台搜索器
 type WySearcher struct{}
 
-// NewWySearcher 创建网易云音乐搜索器
+// NewWySearcher 创建 wy 平台搜索器
 func NewWySearcher() *WySearcher {
 	return &WySearcher{}
 }
@@ -35,7 +35,7 @@ func (s *WySearcher) ID() string {
 
 // Name 返回平台名称
 func (s *WySearcher) Name() string {
-	return "网易云音乐"
+	return "wy"
 }
 
 // eapiEncrypt EAPI 加密函数

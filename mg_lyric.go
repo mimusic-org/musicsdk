@@ -12,10 +12,10 @@ import (
 	"strings"
 )
 
-// MgLyricFetcher 咪咕音乐歌词获取器
+// MgLyricFetcher mg 平台歌词获取器
 type MgLyricFetcher struct{}
 
-// NewMgLyricFetcher 创建咪咕音乐歌词获取器
+// NewMgLyricFetcher 创建 mg 平台歌词获取器
 func NewMgLyricFetcher() *MgLyricFetcher {
 	return &MgLyricFetcher{}
 }
@@ -34,7 +34,7 @@ type mgMusicInfoResponse struct {
 	} `json:"resource"`
 }
 
-// 咪咕歌词请求头
+// mg 歌词请求头
 var mgLyricHeaders = map[string]string{
 	"Referer":    "https://app.c.nf.migu.cn/",
 	"User-Agent": "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Mobile Safari/537.36",

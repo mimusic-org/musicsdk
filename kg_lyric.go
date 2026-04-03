@@ -12,10 +12,10 @@ import (
 	"strings"
 )
 
-// KgLyricFetcher 酷狗音乐歌词获取器
+// KgLyricFetcher kg 平台歌词获取器
 type KgLyricFetcher struct{}
 
-// NewKgLyricFetcher 创建酷狗音乐歌词获取器
+// NewKgLyricFetcher 创建 kg 平台歌词获取器
 func NewKgLyricFetcher() *KgLyricFetcher {
 	return &KgLyricFetcher{}
 }
@@ -41,7 +41,7 @@ type kgLyricDownloadResponse struct {
 	Content string `json:"content"` // base64 编码的歌词
 }
 
-// 酷狗歌词请求头
+// kg 歌词请求头
 var kgLyricHeaders = map[string]string{
 	"KG-RC":      "1",
 	"KG-THash":   "expand_search_manager.cpp:852736169:451",

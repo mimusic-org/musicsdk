@@ -14,19 +14,19 @@ import (
 	"time"
 )
 
-// 咪咕音乐签名常量
+// mg 平台签名常量
 const (
 	mgSignatureMd5    = "6cdc72a439cef99a3418d2a78aa28c73"
 	mgSecretKey       = "yyapp2d16148780a1dcc7408e06336b98cfd50"
 	mgDefaultDeviceId = "963B7AA0D21511ED807EE5846EC87D20"
 )
 
-// MgSearcher 咪咕音乐搜索器
+// MgSearcher mg 平台搜索器
 type MgSearcher struct {
 	deviceId string
 }
 
-// NewMgSearcher 创建咪咕搜索器
+// NewMgSearcher 创建 mg 平台搜索器
 func NewMgSearcher() *MgSearcher {
 	return &MgSearcher{
 		deviceId: mgDefaultDeviceId,
@@ -40,10 +40,10 @@ func (s *MgSearcher) ID() string {
 
 // Name 返回搜索器名称
 func (s *MgSearcher) Name() string {
-	return "咪咕音乐"
+	return "mg"
 }
 
-// mgSearchResponse 咪咕搜索 API 响应
+// mgSearchResponse mg 搜索 API 响应
 type mgSearchResponse struct {
 	Code           string           `json:"code"`
 	Info           string           `json:"info"`
@@ -56,7 +56,7 @@ type mgSongResultData struct {
 	ResultList [][]mgSearchItem `json:"resultList"` // 二维数组
 }
 
-// mgSearchItem 咪咕搜索结果项
+// mgSearchItem mg 搜索结果项
 type mgSearchItem struct {
 	Name         string          `json:"name"`
 	SongId       string          `json:"songId"`
@@ -74,19 +74,19 @@ type mgSearchItem struct {
 	TrcUrl       string          `json:"trcUrl"`
 }
 
-// mgSinger 咪咕歌手信息
+// mgSinger mg 歌手信息
 type mgSinger struct {
 	Name string `json:"name"`
 }
 
-// mgAudioFormat 咪咕音频格式
+// mgAudioFormat mg 音频格式
 type mgAudioFormat struct {
 	FormatType string `json:"formatType"` // PQ, HQ, SQ, ZQ24
 	ASize      int64  `json:"asize"`      // Android size
 	ISize      int64  `json:"isize"`      // iOS size
 }
 
-// mgSign 生成咪咕签名
+// mgSign 生成 mg 平台签名
 func mgSign(keyword string, deviceId string) (sign string, timestamp string) {
 	timestamp = strconv.FormatInt(time.Now().UnixMilli(), 10)
 	// 签名格式: MD5(keyword + signatureMd5 + secretKey + deviceId + timestamp)

@@ -6,15 +6,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
-	"regexp"
 	"strconv"
 	"strings"
 )
 
-// KwLyricFetcher 酷我音乐歌词获取器
+// KwLyricFetcher kw 平台歌词获取器
 type KwLyricFetcher struct{}
 
-// NewKwLyricFetcher 创建酷我音乐歌词获取器
+// NewKwLyricFetcher 创建 kw 平台歌词获取器
 func NewKwLyricFetcher() *KwLyricFetcher {
 	return &KwLyricFetcher{}
 }
@@ -24,7 +23,7 @@ func (f *KwLyricFetcher) ID() string {
 	return "kw"
 }
 
-// kwLyricResponse 酷我歌词 API 响应
+// kwLyricResponse kw 歌词 API 响应
 type kwLyricResponse struct {
 	Data struct {
 		Songinfo struct {
@@ -193,10 +192,4 @@ func (f *KwLyricFetcher) transformLrc(tags []string, lrclist []struct {
 	}
 
 	return strings.Join(lines, "\n")
-}
-
-// cleanLxLyricTags 清理逐字歌词标签
-func (f *KwLyricFetcher) cleanLxLyricTags(lyric string) string {
-	re := regexp.MustCompile(`<-?\d+,-?\d+(?:,-?\d+)?>`)
-	return re.ReplaceAllString(lyric, "")
 }
