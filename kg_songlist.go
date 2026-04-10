@@ -337,8 +337,9 @@ type kgSongListDetailItem2 struct {
 
 // filterData 转换歌曲数据（mobilecdn 格式）为 SearchItem
 func (p *KgSongListProvider) filterData(items []kgSongListDetailItem) []SearchItem {
+	slog.Info("kg filterData", "itemCount", len(items))
 	var list []SearchItem
-	for _, item := range items {
+	for i, item := range items {
 		var types []QualityInfo
 		if item.Filesize != 0 {
 			types = append(types, QualityInfo{
@@ -380,13 +381,16 @@ func (p *KgSongListProvider) filterData(items []kgSongListDetailItem) []SearchIt
 		// 解析歌手和歌曲名：优先使用独立的 songname/singername，否则从 filename 解析
 		singer := item.Singername
 		songName := item.Songname
+		slog.Debug("kg filterData parse", "index", i, "hash", item.Hash, "songname", item.Songname, "singername", item.Singername, "filename", item.Filename)
 		if singer == "" && songName == "" && item.Filename != "" {
 			parts := strings.SplitN(item.Filename, " - ", 2)
 			if len(parts) == 2 {
 				singer = parts[0]
 				songName = parts[1]
+				slog.Debug("kg filterData parsed from filename", "index", i, "singer", singer, "songName", songName)
 			} else {
 				songName = item.Filename
+				slog.Debug("kg filterData use filename as songName", "index", i, "songName", songName)
 			}
 		}
 
@@ -403,6 +407,7 @@ func (p *KgSongListProvider) filterData(items []kgSongListDetailItem) []SearchIt
 			Types:    types,
 		})
 	}
+	slog.Info("kg filterData done", "resultCount", len(list))
 	return list
 }
 
