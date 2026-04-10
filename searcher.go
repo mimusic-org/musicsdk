@@ -15,19 +15,32 @@ type PlatformInfo struct {
 	Name string `json:"name"`
 }
 
+// SongListProvider 歌单提供者接口
+type SongListProvider interface {
+	ID() string
+	Name() string
+	GetSortList() []SortItem
+	GetList(sortId, tagId string, page int) (*SongListResult, error)
+	GetTags() (*TagResult, error)
+	GetListDetail(id string, page int) (*SongListDetailResult, error)
+	SearchSongList(keyword string, page int, limit int) (*SongListResult, error)
+}
+
 // Registry 搜索器注册表
 type Registry struct {
-	searchers     map[string]Searcher
-	lyricFetchers map[string]LyricFetcher
-	order         []string // 保持注册顺序
+	searchers         map[string]Searcher
+	lyricFetchers     map[string]LyricFetcher
+	songListProviders map[string]SongListProvider
+	order             []string // 保持注册顺序
 }
 
 // NewRegistry 创建新的注册表
 func NewRegistry() *Registry {
 	return &Registry{
-		searchers:     make(map[string]Searcher),
-		lyricFetchers: make(map[string]LyricFetcher),
-		order:         []string{},
+		searchers:         make(map[string]Searcher),
+		lyricFetchers:     make(map[string]LyricFetcher),
+		songListProviders: make(map[string]SongListProvider),
+		order:             []string{},
 	}
 }
 
@@ -69,4 +82,29 @@ func (r *Registry) RegisterLyricFetcher(f LyricFetcher) {
 func (r *Registry) GetLyricFetcher(id string) (LyricFetcher, bool) {
 	f, ok := r.lyricFetchers[id]
 	return f, ok
+}
+
+// RegisterSongListProvider 注册歌单提供者
+func (r *Registry) RegisterSongListProvider(p SongListProvider) {
+	r.songListProviders[p.ID()] = p
+}
+
+// GetSongListProvider 获取指定 ID 的歌单提供者
+func (r *Registry) GetSongListProvider(id string) (SongListProvider, bool) {
+	p, ok := r.songListProviders[id]
+	return p, ok
+}
+
+// AllSongListProviders 返回所有歌单提供者的平台信息
+func (r *Registry) AllSongListProviders() []PlatformInfo {
+	platforms := make([]PlatformInfo, 0, len(r.songListProviders))
+	for _, id := range r.order {
+		if p, ok := r.songListProviders[id]; ok {
+			platforms = append(platforms, PlatformInfo{
+				ID:   p.ID(),
+				Name: p.Name(),
+			})
+		}
+	}
+	return platforms
 }

@@ -3,13 +3,9 @@
 package musicsdk
 
 import (
-	"crypto/aes"
-	"crypto/md5"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"log/slog"
-	"strings"
 )
 
 const (
@@ -17,7 +13,6 @@ const (
 	wyUA       = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36"
 	wyReferer  = "https://music.163.com"
 	wySourceID = "wy"
-	eapiKey    = "e82ckenh8dichen8"
 )
 
 // WySearcher wy 平台搜索器
@@ -36,70 +31,6 @@ func (s *WySearcher) ID() string {
 // Name 返回平台名称
 func (s *WySearcher) Name() string {
 	return "wy"
-}
-
-// eapiEncrypt EAPI 加密函数
-// 算法：
-// 1. text = JSON 序列化(object)
-// 2. message = "nobody" + url + "use" + text + "md5forencrypt"
-// 3. digest = MD5(message) → hex 小写
-// 4. data = url + "-36cd479b6b5-" + text + "-36cd479b6b5-" + digest
-// 5. encrypted = AES-128-ECB(data, key)
-// 6. params = hex 大写(encrypted)
-func eapiEncrypt(url string, object interface{}) (string, error) {
-	// JSON 序列化
-	text, err := json.Marshal(object)
-	if err != nil {
-		return "", fmt.Errorf("marshal object: %w", err)
-	}
-	textStr := string(text)
-
-	// 计算 MD5
-	message := "nobody" + url + "use" + textStr + "md5forencrypt"
-	hash := md5.Sum([]byte(message))
-	digest := hex.EncodeToString(hash[:])
-
-	// 拼接待加密数据
-	data := url + "-36cd479b6b5-" + textStr + "-36cd479b6b5-" + digest
-
-	// AES-128-ECB 加密
-	encrypted, err := aesECBEncrypt([]byte(data), []byte(eapiKey))
-	if err != nil {
-		return "", fmt.Errorf("aes encrypt: %w", err)
-	}
-
-	// 转为大写十六进制
-	return strings.ToUpper(hex.EncodeToString(encrypted)), nil
-}
-
-// aesECBEncrypt AES-128-ECB 加密（带 PKCS7 填充）
-func aesECBEncrypt(plaintext, key []byte) ([]byte, error) {
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		return nil, err
-	}
-
-	blockSize := block.BlockSize()
-	// PKCS7 填充
-	plaintext = pkcs7Pad(plaintext, blockSize)
-
-	ciphertext := make([]byte, len(plaintext))
-	// ECB 模式：逐块加密
-	for i := 0; i < len(plaintext); i += blockSize {
-		block.Encrypt(ciphertext[i:i+blockSize], plaintext[i:i+blockSize])
-	}
-
-	return ciphertext, nil
-}
-
-// pkcs7Pad PKCS7 填充
-func pkcs7Pad(data []byte, blockSize int) []byte {
-	padding := blockSize - len(data)%blockSize
-	padtext := make([]byte, padding)
-	for i := range padtext {
-		padtext[i] = byte(padding)
-	}
-	return append(data, padtext...)
 }
 
 // wySearchParams 搜索参数（与 lxserver musicSearch.js 保持一致）

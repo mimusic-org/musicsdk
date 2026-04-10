@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // FormatPlayTime 将秒数格式化为 "MM:SS"
@@ -115,4 +116,29 @@ func TrimString(s string) string {
 // IsEmpty 判断字符串是否为空
 func IsEmpty(s string) bool {
 	return strings.TrimSpace(s) == ""
+}
+
+// FormatPlayCount 格式化播放量
+// 例如: 12345 → "1.2万", 1234567 → "123.4万", 123456789 → "1.2亿"
+func FormatPlayCount(num int) string {
+	if num < 10000 {
+		return fmt.Sprintf("%d", num)
+	}
+	if num < 100000000 {
+		return fmt.Sprintf("%.1f万", float64(num)/10000)
+	}
+	return fmt.Sprintf("%.1f亿", float64(num)/100000000)
+}
+
+// DateFormat 将 Unix 时间戳（秒）格式化为日期字符串
+func DateFormat(timestamp int64) string {
+	if timestamp <= 0 {
+		return ""
+	}
+	// 如果时间戳是毫秒级（大于 10^12），转换为秒
+	if timestamp > 1e12 {
+		timestamp = timestamp / 1000
+	}
+	t := time.Unix(timestamp, 0)
+	return t.Format("2006-01-02")
 }
