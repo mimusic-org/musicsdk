@@ -386,12 +386,9 @@ func (p *KgSongListProvider) filterData(items []kgSongListDetailItem) []SearchIt
 			parts := strings.SplitN(item.Filename, " - ", 2)
 			if len(parts) == 2 {
 				singer = parts[0]
-				songName = parts[1]
 				slog.Debug("kg filterData parsed from filename", "index", i, "singer", singer, "songName", songName)
-			} else {
-				songName = item.Filename
-				slog.Debug("kg filterData use filename as songName", "index", i, "songName", songName)
 			}
+			songName = item.Filename
 		}
 
 		list = append(list, SearchItem{
