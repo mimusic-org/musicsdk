@@ -35,8 +35,8 @@ func (p *KgSongListProvider) Name() string {
 
 // kg 歌单相关常量
 const (
-	kgSongListSignKey    = "NVPh5oo715z5DIWAeQlhMDsWXXQV4hwt"
-	kgSongListLimit      = 30
+	kgSongListSignKey     = "NVPh5oo715z5DIWAeQlhMDsWXXQV4hwt"
+	kgSongListLimit       = 30
 	kgSongListDetailLimit = 100
 )
 
@@ -286,22 +286,22 @@ func (p *KgSongListProvider) getSongListRecommend() ([]SongListItem, error) {
 
 // kgSongListDetailItem 歌单详情中的歌曲项（mobilecdn API）
 type kgSongListDetailItem struct {
-	Hash        string `json:"hash"`
-	Songname    string `json:"songname"`
-	Singername  string `json:"singername"`
-	AlbumName   string `json:"album_name"`
-	AlbumID     int    `json:"album_id"`
-	AudioID     int    `json:"audio_id"`
-	Duration    int    `json:"duration"`
-	Img         string `json:"img"`
-	AlbumImg    string `json:"album_img"`
-	Filesize    int64  `json:"filesize"`
-	Filesize320 int64  `json:"filesize_320"`
-	Hash320     string `json:"hash_320"`
-	FilesizeApe int64  `json:"filesize_ape"`
-	HashApe     string `json:"hash_ape"`
-	FilesizeFlac int64 `json:"filesize_flac"`
-	HashFlac    string `json:"hash_flac"`
+	Hash         string `json:"hash"`
+	Songname     string `json:"songname"`
+	Singername   string `json:"singername"`
+	AlbumName    string `json:"album_name"`
+	AlbumID      string `json:"album_id"`
+	AudioID      int    `json:"audio_id"`
+	Duration     int    `json:"duration"`
+	Img          string `json:"img"`
+	AlbumImg     string `json:"album_img"`
+	Filesize     int64  `json:"filesize"`
+	Filesize320  int64  `json:"filesize_320"`
+	Hash320      string `json:"hash_320"`
+	FilesizeApe  int64  `json:"filesize_ape"`
+	HashApe      string `json:"hash_ape"`
+	FilesizeFlac int64  `json:"filesize_flac"`
+	HashFlac     string `json:"hash_flac"`
 }
 
 // kgSongListDetailItem2 歌单详情中的歌曲项（pubsongscdn API）
@@ -377,16 +377,16 @@ func (p *KgSongListProvider) filterData(items []kgSongListDetailItem) []SearchIt
 		}
 
 		list = append(list, SearchItem{
-			Singer:  DecodeName(item.Singername),
-			Name:    DecodeName(item.Songname),
-			Album:   DecodeName(item.AlbumName),
-			AlbumID: fmt.Sprintf("%d", item.AlbumID),
-			MusicID: item.Hash,
-			Source:  "kg",
+			Singer:   DecodeName(item.Singername),
+			Name:     DecodeName(item.Songname),
+			Album:    DecodeName(item.AlbumName),
+			AlbumID:  item.AlbumID,
+			MusicID:  item.Hash,
+			Source:   "kg",
 			Duration: item.Duration / 1000,
-			Img:     img,
-			Hash:    item.Hash,
-			Types:   types,
+			Img:      img,
+			Hash:     item.Hash,
+			Types:    types,
 		})
 	}
 	return list
@@ -463,16 +463,16 @@ func (p *KgSongListProvider) filterData2(items []kgSongListDetailItem2) []Search
 		}
 
 		list = append(list, SearchItem{
-			Singer:  DecodeName(item.AuthorName),
-			Name:    DecodeName(item.Songname),
-			Album:   DecodeName(item.AlbumInfo.AlbumName),
-			AlbumID: item.AlbumInfo.AlbumID,
-			MusicID: item.AudioInfo.Hash,
-			Source:  "kg",
+			Singer:   DecodeName(item.AuthorName),
+			Name:     DecodeName(item.Songname),
+			Album:    DecodeName(item.AlbumInfo.AlbumName),
+			AlbumID:  item.AlbumInfo.AlbumID,
+			MusicID:  item.AudioInfo.Hash,
+			Source:   "kg",
 			Duration: duration,
-			Img:     img,
-			Hash:    item.AudioInfo.Hash,
-			Types:   types,
+			Img:      img,
+			Hash:     item.AudioInfo.Hash,
+			Types:    types,
 		})
 	}
 	return list
@@ -497,8 +497,8 @@ func (p *KgSongListProvider) getListDetailBySpecialId(id string, page int) (*Son
 	var resp struct {
 		Status int `json:"status"`
 		Data   struct {
-			Total int                        `json:"total"`
-			Info  []kgSongListDetailItem     `json:"info"`
+			Total int                    `json:"total"`
+			Info  []kgSongListDetailItem `json:"info"`
 		} `json:"data"`
 	}
 	if err := json.Unmarshal(body, &resp); err != nil {
@@ -549,8 +549,8 @@ func (p *KgSongListProvider) getUserListDetailById(id string, page int) ([]Searc
 	}
 
 	var resp struct {
-		Status  int `json:"status"`
-		ErrCode int `json:"errcode"`
+		Status  int                     `json:"status"`
+		ErrCode int                     `json:"errcode"`
 		Info    []kgSongListDetailItem2 `json:"info"`
 	}
 	if err := json.Unmarshal(body, &resp); err != nil {
