@@ -289,6 +289,7 @@ type kgSongListDetailItem struct {
 	Hash         string `json:"hash"`
 	Songname     string `json:"songname"`
 	Singername   string `json:"singername"`
+	Filename     string `json:"filename"`
 	AlbumName    string `json:"album_name"`
 	AlbumID      string `json:"album_id"`
 	AudioID      int    `json:"audio_id"`
@@ -376,9 +377,22 @@ func (p *KgSongListProvider) filterData(items []kgSongListDetailItem) []SearchIt
 			img = strings.ReplaceAll(img, "{size}", "400")
 		}
 
+		// 解析歌手和歌曲名：优先使用独立的 songname/singername，否则从 filename 解析
+		singer := item.Singername
+		songName := item.Songname
+		if singer == "" && songName == "" && item.Filename != "" {
+			parts := strings.SplitN(item.Filename, " - ", 2)
+			if len(parts) == 2 {
+				singer = parts[0]
+				songName = parts[1]
+			} else {
+				songName = item.Filename
+			}
+		}
+
 		list = append(list, SearchItem{
-			Singer:   DecodeName(item.Singername),
-			Name:     DecodeName(item.Songname),
+			Singer:   DecodeName(singer),
+			Name:     DecodeName(songName),
 			Album:    DecodeName(item.AlbumName),
 			AlbumID:  item.AlbumID,
 			MusicID:  item.Hash,
