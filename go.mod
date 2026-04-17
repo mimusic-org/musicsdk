@@ -2,7 +2,7 @@ module github.com/mimusic-org/musicsdk
 
 go 1.26
 
-require github.com/mimusic-org/plugin/pkg/go-plugin-http v0.0.0-20260403050353-9ace8993728e
+require github.com/mimusic-org/plugin/pkg/go-plugin-http v0.0.0-20260417035450-0b166733a3ca
 
 require (
 	github.com/knqyf263/go-plugin v0.9.0 // indirect
